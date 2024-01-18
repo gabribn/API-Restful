@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import com.gabrielreis.apirest.domain.Post;
 import com.gabrielreis.apirest.domain.User;
 import com.gabrielreis.apirest.dto.AuthorDTO;
+import com.gabrielreis.apirest.dto.CommentDTO;
 import com.gabrielreis.apirest.repository.PostRepository;
 import com.gabrielreis.apirest.repository.UserRepository;
 
@@ -39,6 +40,13 @@ public class Instanciation implements CommandLineRunner{
 		
 		Post post1 = new Post(null, sdf.parse("22/04/2018"), "Testando o post", "Testezinho testador :)", new AuthorDTO(mariana));
 		Post post2 = new Post(null, sdf.parse("24/04/2018"), "Testei", "O teste do teste deu certo?", new AuthorDTO(mariana));
+		
+		CommentDTO c1 = new CommentDTO("Nice teste man!", sdf.parse("24/03/2018"), new AuthorDTO(alexandre));
+		CommentDTO c2 = new CommentDTO("Testou kkkkkk", sdf.parse("25/03/2018"), new AuthorDTO(bob));
+		CommentDTO c3 = new CommentDTO("Tomalhe no teste", sdf.parse("22/03/2018"), new AuthorDTO(alexandre));
+		
+		post1.getComments().addAll(Arrays.asList(c1, c2));
+		post2.getComments().addAll(Arrays.asList(c3));
 		
 		postRepository.saveAll(Arrays.asList(post1,post2));
 		
