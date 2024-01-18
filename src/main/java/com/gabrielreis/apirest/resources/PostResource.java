@@ -33,6 +33,5 @@ public class PostResource {
 		List<Post> list = service.findByTitle(text);
 		return ResponseEntity.ok().body(list);
 	}
-
 	
 }
