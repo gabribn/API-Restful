@@ -14,7 +14,7 @@ import com.gabrielreis.apirest.services.exception.ObjectNotFoundException;
 public class PostService {
 	@Autowired
 	private PostRepository repo;
-	
+
 	public Post findById(String id) {
 		Optional<Post> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Object not found"));
@@ -23,8 +23,12 @@ public class PostService {
 	public List<Post> findByTitle(String text) {
 		return repo.searchTitle(text);
 	}
-	
+
 	public List<Post> findAll() {
 		return repo.findAll();
 	}
+	
+	public Post insert(Post post) {
+        return repo.save(post);
+    }
 }
