@@ -36,4 +36,9 @@ public class PostResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
+	@GetMapping
+ 	public ResponseEntity<List<Post>> getAll() {
+		List<Post> allPosts = service.findAll();
+		return ResponseEntity.ok().body(allPosts);
+	}
 }

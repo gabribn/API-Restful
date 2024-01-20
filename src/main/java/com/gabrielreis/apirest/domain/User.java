@@ -17,7 +17,7 @@ public class User implements Serializable{
 	private String id;
 	private String name;
 	private String email;
-	
+
 	@DBRef(lazy = true)
 	private List<Post> posts = new ArrayList<>();
 	
@@ -81,4 +81,5 @@ public class User implements Serializable{
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
 	}
+
 }
