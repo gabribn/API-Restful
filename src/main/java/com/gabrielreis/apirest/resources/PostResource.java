@@ -1,6 +1,7 @@
 package com.gabrielreis.apirest.resources;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.gabrielreis.apirest.domain.Post;
+import com.gabrielreis.apirest.domain.User;
 import com.gabrielreis.apirest.resources.util.URL;
 import com.gabrielreis.apirest.services.PostService;
+import com.gabrielreis.apirest.services.UserService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")
@@ -26,6 +29,8 @@ public class PostResource {
 	
 	@Autowired
 	private PostService service;
+	@Autowired
+	private UserService userService;
 	
 	@GetMapping("/{id}")
  	public ResponseEntity<Post> findById(@PathVariable String id) {
@@ -46,10 +51,13 @@ public class PostResource {
 		return ResponseEntity.ok().body(allPosts);
 	}
 	
-	 @PostMapping
-	    public ResponseEntity<Post> insert(@RequestBody Post post) {
-	        Post newPost = service.insert(post);
-	        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newPost.getId()).toUri();
-	        return ResponseEntity.created(uri).body(newPost);
-	    }
+	@PostMapping
+    public ResponseEntity<Post> insert(@RequestBody Post post) {
+        Post newPost = service.insert(post);
+        User user = userService.findById(post.getAuthor().getId());
+        user.getPosts().addAll(Arrays.asList(newPost));
+        userService.update(user);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newPost.getId()).toUri();
+        return ResponseEntity.created(uri).body(newPost);
+    }
 }
